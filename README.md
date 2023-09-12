@@ -31,7 +31,11 @@ Then configure the rules you want to use under the rules section.
 ```json
 {
   "rules": {
-    "fsd-plugin/path-checker": "error"
+    "fsd-plugin/path-checker": ["error", { "alias": "@" }],
+    "fsdm/public-api-imports": [
+            "error",
+            { "alias": "@", "testFilesPatterns": ["**/*.test.*", "**/*.story.*"] },
+        ],
   }
 }
 ```

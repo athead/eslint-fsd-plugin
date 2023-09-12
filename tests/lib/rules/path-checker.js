@@ -11,21 +11,34 @@
 const rule = require("../../../lib/rules/path-checker"),
   RuleTester = require("eslint").RuleTester;
 
-
 //------------------------------------------------------------------------------
 // Tests
 //------------------------------------------------------------------------------
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: { ecmaVersion: 2015, sourceType: "module" },
+});
+
 ruleTester.run("path-checker", rule, {
   valid: [
-    // give me some code that won't trigger a warning
+    {
+      filename: "C:\\Users\\user\\work\\project\\src\\Article",
+      code: "import { addCommentFormActions } from '../../model/slices/addCommentFormSlice'",
+      errors: [],
+    },
   ],
 
   invalid: [
     {
-      code: "",
-      errors: [{ message: "Fill me in.", type: "Me too" }],
+      filename: 'C:\\Users\\user\\Desktop\\project\\src\\entities\\Article',
+      code: "import { addCommentFormActions, addCommentFormReducer } from 'entities/Article/model/slices/addCommentFormSlice'",
+      errors: [{ messageId: "pathError" }],
+    },
+    {
+      filename: 'C:\\Users\\user\\Desktop\\project\\src\\entities\\Article',
+      code: "import { addCommentFormActions, addCommentFormReducer } from '@/entities/Article/model/slices/addCommentFormSlice'",
+      errors: [{ messageId: "pathError" }],
+      options: [{ alias: "@" }],
     },
   ],
 });
